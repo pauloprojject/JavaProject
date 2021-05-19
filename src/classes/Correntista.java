@@ -44,5 +44,16 @@ public class Correntista {
 		this.email = email;
 		this.conta = conta;
 	}
+	public Correntista(String cpf, String nome, String telefone, String email) {
+		super();
+		this.cpf = cpf;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.email = email;
+	}
+	public Correntista() {
+		super();
+	}
+	
 	
 }

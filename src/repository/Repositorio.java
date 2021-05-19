@@ -8,9 +8,10 @@ import classes.Correntista;
 import classes.Lancamento;
 
 public class Repositorio {
-	private TreeMap<String, Correntista> correntistas;
-	private TreeMap<String, Conta> contas;
-	private ArrayList<Lancamento> lancamentos;
+	private TreeMap<String, Correntista> correntistas = new TreeMap<>();
+	private TreeMap<String, Conta> contas = new TreeMap<>();
+	private ArrayList<Lancamento> lancamentos = new ArrayList<>();
+	
 	public TreeMap<String, Correntista> getCorrentistas() {
 		return correntistas;
 	}
@@ -29,11 +30,31 @@ public class Repositorio {
 	public void setLancamentos(ArrayList<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
 	}
-	public Repositorio(TreeMap<String, Correntista> correntistas, TreeMap<String, Conta> contas,
-			ArrayList<Lancamento> lancamentos) {
-		super();
-		this.correntistas = correntistas;
-		this.contas = contas;
-		this.lancamentos = lancamentos;
+	
+	public void adicionar(Correntista correntista) {
+		getCorrentistas().put(correntista.getCpf(), correntista);
+	}
+	public void remover(Correntista correntista) {
+		getCorrentistas().remove(correntista.getCpf());			
+	}
+	public Correntista localizarCorrntista(String cpf) {
+		return getCorrentistas().get(cpf);
+	}
+	
+	public void adicionar(Conta conta) {
+		getContas().put(conta.getChavePiks(), conta);
+	}
+	public void remover(Conta conta) {
+			getCorrentistas().remove(conta.getChavePiks());			
+	}
+	public Correntista localizarConta(String chavePiks) {
+		return getCorrentistas().get(chavePiks);
+	}
+	
+	public void adicionar(Lancamento lancamento) {
+		getLancamentos().add(lancamento);
+	}
+	public void removerLancamento(Lancamento lancamento) {
+		getLancamentos().remove(lancamento);			
 	}
 }
