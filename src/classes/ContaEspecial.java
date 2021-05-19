@@ -13,8 +13,9 @@ public class ContaEspecial extends Conta {
 		this.limite = limite;
 	}
 
-	public ContaEspecial(String numeros, double saldo, String chavePiks, String tipoChavePiks, Correntista correntista, double limite) {
-		super(numeros, saldo, chavePiks, tipoChavePiks, correntista);
+	public ContaEspecial(String numeros, double saldo, String chavePiks, String tipoChavePiks,
+			ArrayList<Lancamento> lancamentos, Correntista correntista, double limite) {
+		super(numeros, saldo, chavePiks, tipoChavePiks, lancamentos, correntista);
 		this.limite = limite;
 	}	
 }

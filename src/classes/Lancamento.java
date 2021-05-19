@@ -24,10 +24,11 @@ public class Lancamento {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-	public Lancamento(double valor, String numero) {
+	public Lancamento(LocalDateTime dataHora, double valor, String numero) {
 		super();
-		this.dataHora = LocalDateTime.now();
+		this.dataHora = dataHora;
 		this.valor = valor;
 		this.numero = numero;
 	}
+	
 }

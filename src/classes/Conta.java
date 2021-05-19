@@ -7,7 +7,7 @@ public class Conta {
 	private double saldo;
 	private String chavePiks;
 	private String tipoChavePiks;
-	private ArrayList<Lancamento> lancamentos = new ArrayList<>();
+	private ArrayList<Lancamento> lancamentos;
 	private Correntista correntista;
 	public String getNumeros() {
 		return numeros;
@@ -45,12 +45,14 @@ public class Conta {
 	public void setCorrentista(Correntista correntista) {
 		this.correntista = correntista;
 	}
-	public Conta(String numeros, double saldo, String chavePiks, String tipoChavePiks, Correntista correntista) {
+	public Conta(String numeros, double saldo, String chavePiks, String tipoChavePiks,
+			ArrayList<Lancamento> lancamentos, Correntista correntista) {
 		super();
 		this.numeros = numeros;
 		this.saldo = saldo;
 		this.chavePiks = chavePiks;
 		this.tipoChavePiks = tipoChavePiks;
+		this.lancamentos = lancamentos;
 		this.correntista = correntista;
 	}
 	
