@@ -51,6 +51,10 @@ public class Correntista {
 		this.telefone = telefone;
 		this.email = email;
 	}
+	@Override
+	public String toString() {
+		return "Correntista [cpf=" + cpf + ", nome=" + nome + ", telefone=" + telefone + ", email=" + email + "]";
+	}
 	public Correntista() {
 		super();
 	}

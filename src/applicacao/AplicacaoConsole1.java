@@ -15,11 +15,11 @@ public class AplicacaoConsole1 {
 			Conta conta;
 			ContaEspecial contaesp;
 
-			conta = Fachada.criarConta("1", 			"111.111.001", "9999001", "joao@ifpb", "joao");
-			conta = Fachada.criarConta("2", 			"111.111.002", "9999002", "maria@ifpb", "maria");
-			contaesp = Fachada.criarConta("3", 100.0,  	"111.111.003", "9999003", "ana@ifpb", "ana");
-			contaesp = Fachada.criarConta("4", 100.0, 	"111.111.004", "9999004", "paulo@ifpb", "paulo");
-
+			conta = Fachada.criarConta("1", "111.111.001", "9999001", "joao@ifpb", "joao");
+			conta = Fachada.criarConta("2", "111.111.002", "9999002", "maria@ifpb", "maria");
+			contaesp = Fachada.criarConta("3", 100.0, "111.111.003", "9999003", "ana@ifpb", "ana");
+			contaesp = Fachada.criarConta("4", 100.0, "111.111.004", "9999004", "paulo@ifpb", "paulo");
+			
 			Fachada.creditar("111.111.001", 500);
 			Fachada.creditar("111.111.002", 500);
 			Fachada.creditar("111.111.003", 500);
@@ -52,7 +52,7 @@ public class AplicacaoConsole1 {
 			System.out.println("\nconta top="+contatop);
 			
 			
-			Fachada.apagarConta("111.111.001");		
+			//Fachada.apagarConta("111.111.001");		
 
 			Fachada.criarChave("111.111.002","aleatorio");
 
@@ -72,40 +72,40 @@ public class AplicacaoConsole1 {
 		}		
 
 		//****************
-//		testarExcecoes();
+		testarExcecoes();
 		//****************
 
 	}
 
 
-	//public static void testarExcecoes() {
-//		System.out.println("\n-------TESTE EXCEÇÕES LANÇADAS--------");
-//		try {
-//			Fachada.criarConta("2", "111.111.002", "9999002", "maria@ifpb", "maria");
-//			System.out.println("*************1Nao lançou exceção para: criar conta existente "); 
-//		}catch (Exception e) {System.out.println("1ok--->"+e.getMessage());}
-//
-//		try {
-//			Fachada.transferir("111.111.002", "111.111.002", 500);	
-//			System.out.println("*************2Nao lançou exceção para: chave inexistente"); 
-//		}catch (Exception e) {System.out.println("2ok--->"+e.getMessage());}
-//
-//		try {
-//			Fachada.transferir("111.111.002", "9999002", 500);	
-//			System.out.println("*************3Nao lançou exceção: conta destino igual a conta origem"); 
-//		}catch (Exception e) {System.out.println("3ok--->"+e.getMessage());}
-//
-//		try {
-//			Fachada.transferir("111.111.004", "ana@ifpb", 2000);	
-//			System.out.println("*************4Nao lançou exceção: sem saldo"); 
-//		}catch (Exception e) {System.out.println("4ok--->"+e.getMessage());}
-//
-//		try {
-//			Fachada.apagarConta("111.111.004");	
-//			System.out.println("*************5Nao lançou exceção: saldo deve ser zero"); 
-//		}catch (Exception e) {System.out.println("5ok--->"+e.getMessage());}
-//
-//	}
+	public static void testarExcecoes() {
+		System.out.println("\n-------TESTE EXCEÇÕES LANÇADAS--------");
+		try {
+			Fachada.criarConta("2", "111.111.002", "9999002", "maria@ifpb", "maria");
+			System.out.println("*************1Nao lançou exceção para: criar conta existente "); 
+		}catch (Exception e) {System.out.println("1ok--->"+e.getMessage());}
+
+		try {
+			Fachada.transferir("111.111.002", "111.111.002", 500);	
+			System.out.println("*************2Nao lançou exceção para: chave inexistente"); 
+		}catch (Exception e) {System.out.println("2ok--->"+e.getMessage());}
+
+		try {
+			Fachada.transferir("111.111.002", "9999002", 500);	
+			System.out.println("*************3Nao lançou exceção: conta destino igual a conta origem"); 
+		}catch (Exception e) {System.out.println("3ok--->"+e.getMessage());}
+
+		try {
+			Fachada.transferir("111.111.004", "ana@ifpb", 2000);	
+			System.out.println("*************4Nao lançou exceção: sem saldo"); 
+		}catch (Exception e) {System.out.println("4ok--->"+e.getMessage());}
+
+		try {
+			Fachada.apagarConta("111.111.004");	
+			System.out.println("*************5Nao lançou exceção: saldo deve ser zero"); 
+		}catch (Exception e) {System.out.println("5ok--->"+e.getMessage());}
+
+	}
 
 
 	public static void main (String[] args) {

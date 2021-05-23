@@ -45,13 +45,13 @@ public class Repositorio {
 		getContas().put(conta.getChavePiks(), conta);
 	}
 	public void remover(Conta conta) {
-			getCorrentistas().remove(conta.getChavePiks());			
+			getContas().remove(conta.getChavePiks());			
 	}
-	public Correntista localizarConta(String chavePiks) {
-		return getCorrentistas().get(chavePiks);
+	public Conta localizarConta(String chavePiks) {
+		return getContas().get(chavePiks);
 	}
 	
-	public void adicionar(Lancamento lancamento) {
+	public void adicionarLancamento(Lancamento lancamento) {
 		getLancamentos().add(lancamento);
 	}
 	public void removerLancamento(Lancamento lancamento) {

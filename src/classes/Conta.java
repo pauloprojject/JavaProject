@@ -4,13 +4,21 @@ import java.util.ArrayList;
 
 public class Conta {
 	private String numeros;
-	private double saldo;
+	private double saldo = 0;
 	private String chavePiks;
 	private String tipoChavePiks;
 	private ArrayList<Lancamento> lancamentos = new ArrayList<>();
 	private Correntista correntista;
 	public String getNumeros() {
 		return numeros;
+	}
+	public void creditar(double valor) {
+		this.saldo += valor;
+	}
+	@Override
+	public String toString() {
+		return "Conta [numeros=" + numeros + ", saldo=" + saldo + ", chavePiks=" + chavePiks + ", tipoChavePiks="
+				+ tipoChavePiks + "]";
 	}
 	public void setNumeros(String numeros) {
 		this.numeros = numeros;
@@ -45,10 +53,9 @@ public class Conta {
 	public void setCorrentista(Correntista correntista) {
 		this.correntista = correntista;
 	}
-	public Conta(String numeros, double saldo, String chavePiks, String tipoChavePiks, Correntista correntista) {
+	public Conta(String numeros, String chavePiks, String tipoChavePiks, Correntista correntista) {
 		super();
 		this.numeros = numeros;
-		this.saldo = saldo;
 		this.chavePiks = chavePiks;
 		this.tipoChavePiks = tipoChavePiks;
 		this.correntista = correntista;
@@ -60,6 +67,19 @@ public class Conta {
 	}
 	public Conta() {
 		super();
+	}
+	public void debitar(double quantia) throws Exception {
+		if ((getSaldo() - quantia) < 0) {
+			throw new Exception("Operação inválida: Crédito insuficiente.");
+		}
+		this.saldo -= quantia;
+	}
+	public void transferir(double quantia, Conta destino) throws Exception {
+		this.debitar(quantia);
+		destino.creditar(quantia);
+	}
+	public void adicionarLancamento(Lancamento lancamento) {
+		this.lancamentos.add(lancamento);
 	}
 	
 	

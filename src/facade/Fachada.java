@@ -30,20 +30,21 @@ public class Fachada {
 	public static ArrayList<Lancamento> listarLancamentos(){
 		return repositorio.getLancamentos();
 	}
-	public static void apagarConta(String cpf) {
+	public static void apagarConta(String cpf) throws Exception {
+		if(repositorio.localizarCorrntista(cpf).getConta().getSaldo() != 0) {
+			throw new Exception("Operação inválida: Conta deve ter saldo zerado.");
+		}
 		for(Lancamento l : obterConta(cpf).getLancamentos()) {
 			repositorio.removerLancamento(l);					
 		}
 		repositorio.remover(obterConta(cpf));
 	}
-	public static Conta obterConta(String cpf) {
-		Conta c = null;
-		for (Map.Entry<String, Conta> entry : repositorio.getContas().entrySet()) {
-			if (entry.getValue().getCorrentista().getCpf() == cpf) {
-				c = entry.getValue();
-			}
+	public static Conta obterConta(String cpf) throws Exception {
+		Correntista c = repositorio.localizarCorrntista(cpf);
+		if (c == null) {
+			throw new Exception("Correntista não existe");
 		}
-		return c;
+		return c.getConta();
 	}
 	public static Conta obterContaTop() {
 		Conta c = null;
@@ -55,12 +56,16 @@ public class Fachada {
 		}
 		return c;
 	}
-	public static Conta criarConta(String numero, String cpf, String telefone, String email, String nome) {
+	public static Conta criarConta(String numero, String cpf, String telefone, String email, String nome) throws Exception {
+		if(repositorio.localizarCorrntista(cpf) != null) {
+			throw new Exception("Operação inválida: conta existente");
+		}
 		Conta c = new Conta();
 		c.setNumeros(numero);
-		Correntista c2 = new Correntista(cpf, nome, telefone, email, c);
+		Correntista c2 = new Correntista(cpf, nome, telefone, email);
 		c.setCorrentista(c2);
-		repositorio.adicionar(c);
+		c2.setConta(c);
+//		repositorio.adicionar(c);
 		repositorio.adicionar(c2);
 		return c;
 	}
@@ -70,51 +75,73 @@ public class Fachada {
 		c.setNumeros(numero);
 		c.setLimite(limite);
 		c2.setConta(c);
-		repositorio.adicionar(c);
+//		repositorio.adicionar(c);
 		repositorio.adicionar(c2);
 		return c;
 	}
 	public static void creditar(String cpf, double valor) {
-		double soma = 0;
-		for (Map.Entry<String, Correntista> entry : repositorio.getCorrentistas().entrySet()) {
-			if (entry.getValue().getCpf() == cpf) {
-				soma = obterConta(cpf).getSaldo() + valor;
-			}
-		}
-		obterConta(cpf).setSaldo(soma);
+		Correntista c = repositorio.localizarCorrntista(cpf);
+		Conta c2 = c.getConta();
+		c2.creditar(valor);
 	}
-	public static void criarChave(String cpf, String tipochavePIKS) {
-		Random rand = new Random();
-		int n = 100000 + rand.nextInt(900000);
+	public static void criarChave(String cpf, String tipochavePIKS) throws Exception {
 		Conta c = obterConta(cpf);
+		String key = c.getChavePiks();
 		switch(tipochavePIKS) {
 			case "cpf":
+				if(c.getCorrentista().getCpf().isEmpty()) {
+					throw new Exception("Não pode criar chave - cpf vazio");
+				}
 				c.setChavePiks(c.getCorrentista().getCpf());
 				c.setTipoChavePiks(tipochavePIKS);
+				repositorio.adicionar(c);
 				break;
 			case "email":
+				if(c.getCorrentista().getEmail().isEmpty()) {
+					throw new Exception("Não pode criar chave - Email vazio");
+				}
+
 				c.setChavePiks(c.getCorrentista().getEmail());
 				c.setTipoChavePiks(tipochavePIKS);
+				repositorio.adicionar(c);
 				break;
 			case "telefone":
+				if(c.getCorrentista().getTelefone().isEmpty()) {
+					throw new Exception("Não pode criar chave - Telefone vazio");
+				}
+
 				c.setChavePiks(c.getCorrentista().getTelefone());
 				c.setTipoChavePiks(tipochavePIKS);
+				repositorio.adicionar(c);
 				break;
-			case "aleatoria":
-				c.setChavePiks(Integer.toString(n));
+			case "aleatorio":
+				Random rand = new Random();
+				long n = 1000000000 + rand.nextInt(900000000);
+				String s = Long.toString(n);
+				c.setChavePiks(s.substring(0, 8));
 				c.setTipoChavePiks(tipochavePIKS);
+				if (!(key == null)) {
+					break;
+				}
+				repositorio.adicionar(c);	
 				break;
 		}
 	}
-	public static void transferir(String cpf, String chavePIKS, double quantia) {
-		Conta c = obterConta(cpf);
-		for(Map.Entry<String, Conta> entry : repositorio.getContas().entrySet()) {
-			if(entry.getValue().getChavePiks() == chavePIKS) {
-				creditar(entry.getValue().getCorrentista().getCpf(), quantia);
-				entry.getValue().getLancamentos().add(new Lancamento(quantia, entry.getValue().getNumeros()));
-			}
+	public static void transferir(String cpf, String chavePIKS, double quantia) throws Exception {
+		Conta origem = obterConta(cpf);
+		Conta destino = repositorio.localizarConta(chavePIKS);
+		if(destino == null) {
+			throw new Exception("Operação inválida: Conta destino inexistente");
 		}
-		c.setSaldo(c.getSaldo() - quantia);
-		c.getLancamentos().add(new Lancamento(-quantia, c.getNumeros()));
+		if(origem.equals(destino)) {
+			throw new Exception("Operação inválida: conta origem é igual conta destino");
+		}
+		origem.transferir(quantia, destino);
+		Lancamento l1 = new Lancamento(-quantia, destino.getNumeros());
+		Lancamento l2 = new Lancamento(quantia, origem.getNumeros());
+		origem.adicionarLancamento(l1);
+		destino.adicionarLancamento(l2);
+		repositorio.adicionarLancamento(l1);
+		repositorio.adicionarLancamento(l2);
 	}
 }

@@ -30,4 +30,8 @@ public class Lancamento {
 		this.valor = valor;
 		this.numero = numero;
 	}
+	@Override
+	public String toString() {
+		return "Lancamento [dataHora=" + dataHora + ", valor=" + valor + ", numero=" + numero + "]";
+	}
 }
