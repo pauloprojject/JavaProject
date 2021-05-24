@@ -22,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import fachada.Fachada;
+import facade.Fachada;
 
 public class TelaCriarChavePIKS extends JFrame {
 	private JPanel contentPane;
@@ -82,7 +82,7 @@ public class TelaCriarChavePIKS extends JFrame {
 				try {
 					String cpf = textField.getText();
 					String tipochave = (String) list.getSelectedValue();
-					Fachada.criarChavePIKS(cpf, tipochave);		
+					Fachada.criarChave(cpf, tipochave);		
 					
 					lblmsg.setText("chave criada");
 				} catch (Exception e) {

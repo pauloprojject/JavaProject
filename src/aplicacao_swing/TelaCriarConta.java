@@ -13,8 +13,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import fachada.Fachada;
-import modelo.Conta;
+import facade.Fachada;
+import classes.Conta;
 import javax.swing.SwingConstants;
 
 public class TelaCriarConta extends JFrame {

@@ -23,10 +23,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import fachada.Fachada;
-import modelo.Conta;
-import modelo.ContaEspecial;
-import modelo.Correntista;
+import facade.Fachada;
+import classes.Conta;
+import classes.ContaEspecial;
+import classes.Correntista;
 
 public class TelaPrincipal {
 	private JFrame frame;
